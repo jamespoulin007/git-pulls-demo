@@ -1,0 +1,19 @@
+{
+  "name": "git-pulls-demo",
+  "version": "1.0.0",
+  "description": "demo git pulls app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx pm2-dev index.js",
+    "start": "npx pm2 start index.js"
+  },
+  "author": "James Poulin",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "pm2": "^5.2.2"
+  }
+}
