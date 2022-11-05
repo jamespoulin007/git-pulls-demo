@@ -3,7 +3,8 @@ extends default
 block content
   header
     div(class="container-fluid")
-      a.logo(href='/') GitHub API
+      h5 
+        a(href='/') GitHub API
       div(class="row justify-content-md-center")
         div(class="col-md-auto")
           form(action='/search' method='GET' class="form-inline mx-auto")
@@ -20,20 +21,35 @@ block content
   div(class="row justify-content-md-center")
     div(class="col-md-auto")
       if !searchResults
-        .result-count
           p No results found for your query:
           |
           strong #{searchQuery}
       else
-        ul(id="repoPulls" class="list-group mx-auto mb-5" style="width: 500px")
+        ul(id="repoPulls" class="list-group mx-auto mb-5")
           each pullRequest in searchResults
             li(class="list-group-item")
-              p.font-weight-bold Title: 
-                p #{pullRequest.title}
-              p State: #{pullRequest.state}
-              p Created: #{pullRequest.created_at}
-              p State: #{pullRequest.url}
-              
+              div(class="container")
+                div(class="row")
+                  div(class="col-sm-2")
+                    p.font-weight-bold Title:
+                  div(class="col-sm-8")
+                    p #{pullRequest.title}
+                div(class="row")
+                  div(class="col-sm-2")
+                    p.font-weight-bold State:
+                  div(class="col-sm-8")
+                    p #{pullRequest.state}
+                div(class="row")
+                  div(class="col-sm-2")  
+                    p.font-weight-bold Created:
+                  div(class="col-sm-8")
+                    p #{pullRequest.created_at}
+                div(class="row")
+                  div(class="col-sm-2")
+                    p.font-weight-bold URL:
+                  div(class="col-sm-8")
+                    a(href=`${pullRequest.html_url}`) #{pullRequest.html_url}
+                
               
 
 

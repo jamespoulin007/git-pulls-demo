@@ -13,12 +13,31 @@ app.get('/', (req, res) => {
   });
 });
 
+function subtractDays(numOfDays, date = new Date()) {
+  date.setDate(date.getDate() - numOfDays);
+
+  return date;
+}
+
 async function searchGit(gitOwner, gitRepo) {
   const response = await axios.get(
     `https://api.github.com/repos/${gitOwner}/${gitRepo}/pulls`
   );
+  
+  const weekDate = subtractDays(7);
+  // const filteredData = response.data.filter(obj => Date(obj.created_at) > weekDate)
 
-  return response.data;
+
+  var startDate = new Date(weekDate);
+  // var endDate = new Date(date.getDate());
+  var filteredData = response.data.filter(a => {
+      var date = new Date(a.created_at);
+      return (date >= startDate && date)
+    });
+  // console. log(filteredData)
+  // console.log(weekDate)
+
+  return filteredData;
 }
 
 app.get('/search', async (req, res) => {
@@ -30,7 +49,7 @@ app.get('/search', async (req, res) => {
     return;
   }
 
-  console.log(gitOwner,"/",gitRepo);
+  console.log("GitProject:",gitOwner,"|","GitRepo:",gitRepo);
  
   const results = await searchGit(gitOwner, gitRepo);
   
@@ -42,7 +61,7 @@ app.get('/search', async (req, res) => {
   
   
   // res.status(200).json(results);
-  // res.status(200).end();
+  
 });
 
 const server = app.listen(process.env.PORT || 3000, () => {
