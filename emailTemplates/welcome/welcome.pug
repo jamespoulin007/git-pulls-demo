@@ -1,5 +1,30 @@
 extends ../layout
 
 block content
-  - const name = data.name;
-  h3 welcome #{name}
+  - const resultData = data.resultData;
+  div(class="row justify-content-md-center")
+    div(class="col-md-auto")
+      ul(id="repoPulls" class="list-group mx-auto mb-5")
+        each pullRequest in resultData
+          li(class="list-group-item")
+            div(class="container")
+              div(class="row")
+                div(class="col-sm-2")
+                  p.font-weight-bold Title:
+                div(class="col-sm-8")
+                  p #{pullRequest.title}
+              div(class="row")
+                div(class="col-sm-2")
+                  p.font-weight-bold State:
+                div(class="col-sm-8")
+                  p #{pullRequest.state}
+              div(class="row")
+                div(class="col-sm-2")  
+                  p.font-weight-bold Created:
+                div(class="col-sm-8")
+                  p #{pullRequest.created_at}
+              div(class="row")
+                div(class="col-sm-2")
+                  p.font-weight-bold URL:
+                div(class="col-sm-8")
+                  a(href=`${pullRequest.html_url}`) #{pullRequest.html_url}

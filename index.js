@@ -5,7 +5,6 @@ const app = express();
 const dotenv = require('dotenv');
 const Nodemailer = require('./nodemailer');
 
-
 const result = dotenv.config({ path: '.env.dev' })
 if (result.error) {
   throw result.error
@@ -52,7 +51,7 @@ async function searchGit(gitOwner, gitRepo) {
     });
   // console. log(filteredData)
   // console.log(weekDate)
-
+  
   return filteredData;
 }
 
@@ -67,12 +66,13 @@ app.get('/search', async (req, res) => {
 
   console.log("GitProject:",gitOwner,"|","GitRepo:",gitRepo);
  
-  const results = await searchGit(gitOwner, gitRepo);
-  
+  globalThis.results = await searchGit(gitOwner, gitRepo);
+    
   res.render('search', {
     title: `Pull Request Search results for: GitRepoOwner:${gitOwner} GitRepo:${gitRepo} `,
     searchResults: results,
     searchQuery,
+    locals: res.locals
   });
   
   
@@ -85,16 +85,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.post('/api/send-email', async (req, res) => {
-  // console.log(req.body.name)
-  // console.log(req.body.emailAddress)
-  // res.redirect(302, '/');
-  // return;
+  
+  // console.log(req.body)
+  // console.log(req.query)
+  // console.log(globalThis.results)
 
   try {
-    const email = req.body.email;
-    const name = req.body.name;
+    const {email, name} = req.body;
     const from = name+"@"+auth.auth.domain;
-    await new Nodemailer({ name }, email, from, 'Welcome', auth).sendMail();
+    const resultData = globalThis.results
+    await new Nodemailer({ resultData }, email, from, 'Welcome', auth).sendMail();
     return res.json({
       success: true,
       message: 'Email Send Successfully',
