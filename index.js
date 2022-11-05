@@ -55,32 +55,6 @@ async function searchGit(gitOwner, gitRepo) {
   return filteredData;
 }
 
-app.get('/search', async (req, res) => {
-  const gitOwner = req.query.owner;
-  const gitRepo = req.query.repo;
-  const searchQuery = `https://api.github.com/repos/${gitOwner}/${gitRepo}/pulls`;
-  if (!gitOwner || !gitRepo) {
-    res.redirect(302, '/');
-    return;
-  }
-
-  console.log("GitProject:",gitOwner,"|","GitRepo:",gitRepo);
-  console.log(searchQuery)
- 
-  globalThis.results = await searchGit(gitOwner, gitRepo);
-    
-  res.render('search', {
-    title: `Pull Request Search results for: GitRepoOwner:${gitOwner} GitRepo:${gitRepo} `,
-    searchResults: results,
-    searchQuery
-  });
-  
-  
-  // res.status(200).json(results);
-  
-});
-
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -108,7 +82,46 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
+app.get('/search', async (req, res) => {
+  try {
+    const gitOwner = req.query.owner;
+    const gitRepo = req.query.repo;
+    const searchQuery = `https://api.github.com/repos/${gitOwner}/${gitRepo}/pulls`;
+    if (!gitOwner || !gitRepo) {
+      res.redirect(302, '/');
+      console.log("No data enetered")
+      return;
+    }
 
+    console.log("GitProject:",gitOwner,"|","GitRepo:",gitRepo);
+    console.log(searchQuery)
+  
+    globalThis.results = await searchGit(gitOwner, gitRepo);
+      
+    res.render('search', {
+      title: `Pull Request Search results for: GitRepoOwner:${gitOwner} GitRepo:${gitRepo} `,
+      searchResults: results,
+      searchQuery
+    });
+  } catch (err) {
+    // next(err);
+    // console.log(err)
+    return res.status(400).json({
+      success: false,
+      message: err,
+    });
+  }
+  
+  // res.status(200).json(results);
+  
+});
+
+
+// app.use(function err (err, req, res, next) {
+//   console.error(err);
+//   res.set('Content-Type', 'text/html');
+//   res.status(500).send('<h1>Internal Server Error</h1>');
+// });
 
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Node server started on port: ${server.address().port}`);
