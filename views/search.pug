@@ -16,6 +16,18 @@ block content
                     input(id="repoInput" class="form-control mb-5" type="text" name="repo" placeholder="GitHub Repo Name" value="node")
                   div(class="col-auto")
                     input(id="submit" type="submit" class="btn btn-primary ml-2 mb-5" value="Submit")
+      
+      div(class="row justify-content-md-center")
+        div(class="col-md-auto")
+          h6 Email this to me
+          form(action='/api/send-email' method='post' class="form-inline mx-auto")
+            div(class="form-row align-items-center")
+                  div(class="col-auto")
+                    input(class="form-control mb-5" type="text" name="name" placeholder="name" value="James")
+                  div(class="col-auto")
+                    input(class="form-control mb-5" type="text" name="email" placeholder="your@email.address" value="jamespoulin007@gmail.com")
+                  div(class="col-auto")
+                    input(type="submit" class="btn btn-primary ml-2 mb-5" value="Send")
    
 
   div(class="row justify-content-md-center")

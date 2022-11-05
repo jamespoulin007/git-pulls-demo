@@ -2,6 +2,22 @@ const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const app = express();
+const dotenv = require('dotenv');
+const Nodemailer = require('./nodemailer');
+
+
+const result = dotenv.config({ path: '.env.dev' })
+if (result.error) {
+  throw result.error
+}
+console.log(result.parsed)
+
+const auth = {
+  auth: {
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN
+  }
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -63,6 +79,36 @@ app.get('/search', async (req, res) => {
   // res.status(200).json(results);
   
 });
+
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.post('/api/send-email', async (req, res) => {
+  // console.log(req.body.name)
+  // console.log(req.body.emailAddress)
+  // res.redirect(302, '/');
+  // return;
+
+  try {
+    const email = req.body.email;
+    const name = req.body.name;
+    const from = name+"@"+auth.auth.domain;
+    await new Nodemailer({ name }, email, from, 'Welcome', auth).sendMail();
+    return res.json({
+      success: true,
+      message: 'Email Send Successfully',
+  });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      success: false,
+      message: err,
+    });
+  }
+});
+
+
 
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Node server started on port: ${server.address().port}`);
