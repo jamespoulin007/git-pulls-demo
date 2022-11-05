@@ -65,14 +65,14 @@ app.get('/search', async (req, res) => {
   }
 
   console.log("GitProject:",gitOwner,"|","GitRepo:",gitRepo);
+  console.log(searchQuery)
  
   globalThis.results = await searchGit(gitOwner, gitRepo);
     
   res.render('search', {
     title: `Pull Request Search results for: GitRepoOwner:${gitOwner} GitRepo:${gitRepo} `,
     searchResults: results,
-    searchQuery,
-    locals: res.locals
+    searchQuery
   });
   
   
