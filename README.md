@@ -3,10 +3,10 @@
 Simple nodejs express app.  
 
 Allows you to enter a Github project/owner and repo name and will return all pull requests for that repo in the last 7 days.  
-![home] (public/images/home.png)
+![home](public/images/home.png)
 
 You can then enter your name and email address to have the list emailed to you (be sure to check your spam folder)  
-![search] (public/images/search.png)
+![search](public/images/search.png)
 
 
 
