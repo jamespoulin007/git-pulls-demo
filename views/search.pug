@@ -7,13 +7,17 @@ block content
         a(href='/') GitHub API
       div(class="row justify-content-md-center")
         div(class="col-md-auto")
+          div(class="row")
+            div(class="col-5")
+              label(for="ownerInput") Repo Project / Owner
+            div(class="col-5")
+              label(for="repoInput") Repo Name
           form(action='/search' method='GET' class="form-inline mx-auto")
             div(class="form-row align-items-center")
                   div(class="col-auto")
-                    //input(class="form-control mb-5" autofocus='' placeholder='Search' type='search' name='q')
-                    input(id="ownerInput" class="form-control mb-5" type="text" name="owner" placeholder="GitHub Repo Owner" value="nodejs")
+                    input(id="ownerInput" class="form-control mb-5" type="text" name="owner" placeholder="ex. nodejs")
                   div(class="col-auto")
-                    input(id="repoInput" class="form-control mb-5" type="text" name="repo" placeholder="GitHub Repo Name" value="node")
+                    input(id="repoInput" class="form-control mb-5" type="text" name="repo" placeholder="ex. node")
                   div(class="col-auto")
                     input(id="submit" type="submit" class="btn btn-primary ml-2 mb-5" value="Submit")
       
@@ -23,9 +27,9 @@ block content
           form(action='/api/send-email' method='post' class="form-inline mx-auto")
             div(class="form-row align-items-center")
                   div(class="col-auto")
-                    input(class="form-control mb-5" type="text" name="name" placeholder="name" value="James")
+                    input(class="form-control mb-5" type="text" name="name" placeholder="ex. John")
                   div(class="col-auto")
-                    input(class="form-control mb-5" type="text" name="email" placeholder="your@email.address" value="jamespoulin007@gmail.com")
+                    input(class="form-control mb-5" type="text" name="email" placeholder="ex. your@email.address")
                   div(class="col-auto")
                     input(type="submit" class="btn btn-primary ml-2 mb-5" value="Send")
    
@@ -37,6 +41,7 @@ block content
           |
           strong #{searchQuery}
       else
+      p Pull requests from the last 7 days...
         ul(id="repoPulls" class="list-group mx-auto mb-5")
           each pullRequest in searchResults
             li(class="list-group-item")

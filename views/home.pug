@@ -12,13 +12,19 @@ block content
     
     div(class="row justify-content-md-center")
       div(class="col-md-auto")
+        div(class="row")
+          div(class="col-5")
+            label(for="ownerInput") Repo Project / Owner
+          div(class="col-5")
+            label(for="repoInput") Repo Name
         form(action='/search' method='GET' class="form-inline mx-auto")
           div(class="form-row align-items-center")
-                div(class="col-auto")
-                  //input(class="form-control mb-5" autofocus='' placeholder='Search' type='search' name='q')
-                  input(id="ownerInput" class="form-control mb-5" type="text" name="owner" placeholder="GitHub Repo Owner" value="nodejs")
-                div(class="col-auto")
-                  input(id="repoInput" class="form-control mb-5" type="text" name="repo" placeholder="GitHub Repo Name" value="node")
-                div(class="col-auto")
-                  input(id="submit" type="submit" class="btn btn-primary ml-2 mb-5" value="Submit")
+            div(class="col-auto")
+              input(id="ownerInput" class="form-control mb-5" type="text" name="owner" placeholder="ex. nodejs")
+            div(class="col-auto")
+              input(id="repoInput" class="form-control mb-5" type="text" name="repo" placeholder="ex. node")
+            div(class="col-auto")
+              input(id="submit" type="submit" class="btn btn-primary ml-2 mb-5" value="Submit")
+
+      
     

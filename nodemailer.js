@@ -35,7 +35,7 @@ class Nodemailer {
   }
 
   async sendMail() {
-    await this.send('welcome');
+    await this.send('gitPullsTemplate');
   }
 }
 

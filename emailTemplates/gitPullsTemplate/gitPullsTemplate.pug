@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  - const resultData = data.resultData;
+  table(class="table table-bordered" cellpadding="10")
+    tr
+      th 
+        p.font-weight-bold Title
+      th
+        p.font-weight-bold State
+      th
+        p.font-weight-bold Draft
+      th
+        p.font-weight-bold Created
+      th
+        p.font-weight-bold URL
+
+    each pullRequest in resultData
+      tr
+        td
+          p #{pullRequest.title}
+        td
+          p #{pullRequest.state}
+        td
+          p #{pullRequest.draft}
+        td
+          p #{pullRequest.created_at}
+        td
+          a(href=`${pullRequest.html_url}`) #{pullRequest.html_url}

@@ -5,11 +5,20 @@ const app = express();
 const dotenv = require('dotenv');
 const Nodemailer = require('./nodemailer');
 
+// 
+// using dotenv to load mailgun api key and domain 
+// *** for the send email function to work a local
+// *** .env.dev file is needed with the following variables
+// *** MAILGUN_API_KEY="your mailgun api key goes here" 
+// *** MAILGUN_DOMAIN="your mailgun domain goes here"
+// 
 const result = dotenv.config({ path: '.env.dev' })
 if (result.error) {
   throw result.error
 }
-console.log(result.parsed)
+
+// for debug of dotenv
+//console.log(result.parsed)
 
 const auth = {
   auth: {
@@ -19,7 +28,6 @@ const auth = {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
@@ -30,26 +38,26 @@ app.get('/', (req, res) => {
 
 function subtractDays(numOfDays, date = new Date()) {
   date.setDate(date.getDate() - numOfDays);
-
   return date;
 }
 
+// 
+// just using unauthenticated get on the github api address here
+// ideally would be better to be using the oktokit github rest api
+// 
 async function searchGit(gitOwner, gitRepo) {
   const response = await axios.get(
     `https://api.github.com/repos/${gitOwner}/${gitRepo}/pulls`
   );
   
   const weekDate = subtractDays(7);
-  // const filteredData = response.data.filter(obj => Date(obj.created_at) > weekDate)
-
-
   var startDate = new Date(weekDate);
   // var endDate = new Date(date.getDate());
   var filteredData = response.data.filter(a => {
       var date = new Date(a.created_at);
       return (date >= startDate && date)
     });
-  // console. log(filteredData)
+
   // console.log(weekDate)
   
   return filteredData;
@@ -68,7 +76,7 @@ app.post('/api/send-email', async (req, res) => {
     const {email, name} = req.body;
     const from = name+"@"+auth.auth.domain;
     const resultData = globalThis.results
-    await new Nodemailer({ resultData }, email, from, 'Welcome', auth).sendMail();
+    await new Nodemailer({ resultData }, email, from, 'Weekly Github Pull Request Report', auth).sendMail();
     return res.json({
       success: true,
       message: 'Email Send Successfully',
@@ -116,7 +124,9 @@ app.get('/search', async (req, res) => {
   
 });
 
-
+// 
+// couldn't quite get this working 
+// 
 // app.use(function err (err, req, res, next) {
 //   console.error(err);
 //   res.set('Content-Type', 'text/html');
